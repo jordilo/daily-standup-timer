@@ -11,6 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "only-electon": "electron electron/dist/main.js",
+    "package-mac": "electron-builder --dir ",
     "electron": "ng build --base-href \"./\" && tsc -p electron && electron ."
   },
   "private": true,
@@ -41,6 +42,7 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "electron": "^8.2.5",
+    "electron-builder": "^22.6.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.4.1",
