@@ -16,7 +16,7 @@ export class Helper {
       }
       result.push(current);
       if (index + 1 < iterations) {
-        currentRest = { type: 'rest', value: restDuration, start: current.end + 0.000, end: current.end + restDuration - 0.000 }
+        currentRest = { type: 'rest', value: restDuration, start: current.end + 0.000, end: current.end + restDuration - 0.000 };
         result.push(currentRest);
       }
       return [...acc, ...result];

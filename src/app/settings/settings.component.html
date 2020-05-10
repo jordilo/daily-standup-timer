@@ -22,6 +22,15 @@
     <input type="number"
            formControlName="warningTimer" />
   </div>
+  <div class="form-group">
+    <label>Beep volume</label>
+    <input type="range"
+           min="0"
+           max="1"
+           step="0.05"
+           formControlName="volume" />
+           <span>{{form.value.volume * 100 }}%</span>
+  </div>
   <app-summary-graph [iterations]="form.value.totalIterations"
                      [duration]="form.value.stepDuration"
                      [restDuration]="form.value.restDuration"></app-summary-graph>

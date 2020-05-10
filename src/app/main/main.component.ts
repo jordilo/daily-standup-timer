@@ -14,7 +14,7 @@ import * as moment from 'moment';
 export class MainComponent implements OnInit {
 
   public configuration$: Observable<Configuration>;
-  public runninfSettings$: Observable<Configuration>;
+  public runningSettings$: Observable<Configuration>;
   public timerStatus$: Observable<TimerStatus>;
   public startTimeStatus$: Observable<moment.Moment>;
 
@@ -25,7 +25,7 @@ export class MainComponent implements OnInit {
 
   public ngOnInit(): void {
     this.configuration$ = this.store.configuration$;
-    this.runninfSettings$ = this.store.runningSettings$;
+    this.runningSettings$ = this.store.runningSettings$;
 
     this.progress$ = this.timerService.timer$;
     this.timerStatus$ = this.timerService.status$;
@@ -46,6 +46,9 @@ export class MainComponent implements OnInit {
 
   public selectGraph(block: Block) {
     this.timerService.moveTo(block.start);
+  }
+  public moveTo(blocks: Block[], position: number) {
+
   }
 }
 

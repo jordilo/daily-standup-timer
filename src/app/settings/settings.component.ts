@@ -20,6 +20,7 @@ export class SettingsComponent implements OnInit {
     this.form = this.fb.group({
       restDuration: [1, Validators.min(1)],
       stepDuration: [1, Validators.min(1)],
+      volume: [1, [Validators.min(0), Validators.max(1)]],
       totalIterations: [1, [Validators.min(1), Validators.max(18)]],
       warningTimer: [1, [Validators.min(5)]]
     });

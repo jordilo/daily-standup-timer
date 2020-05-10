@@ -1,5 +1,9 @@
-<h1>{{ currentProgress | formatTimer}}.<small> {{currentProgress | milliseconds : 1}}</small></h1>
+<div class="remaining-timer">{{ currentProgress | formatTimer}}.<small>{{currentProgress | milliseconds : 1}}</small></div>
 <div *ngIf="startTime; else notime">{{timer$ | async | formatTimer}} </div>
+<ng-content *ngIf="startTime"></ng-content>
 <ng-template #notime>
   <div>Not started</div>
 </ng-template>
+<audio #audio>
+  <source src="./assets/beep.mp3" type="audio/mpeg">
+</audio>

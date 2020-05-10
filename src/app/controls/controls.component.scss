@@ -1,0 +1,9 @@
+@import '../../variables.scss';
+:host {
+  display: flex;
+  flex: 0;
+  button {
+    flex: 1;
+    padding: $padding;
+  }
+}

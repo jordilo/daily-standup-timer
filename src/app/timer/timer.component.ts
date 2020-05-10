@@ -1,10 +1,21 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, ChangeDetectorRef, HostBinding } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  HostBinding,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { Block, TimerStatus } from '../definitions/config-data';
+import { Block } from '../definitions/config-data';
 import { Observable } from 'rxjs/internal/Observable';
-import { interval, BehaviorSubject, timer, NEVER } from 'rxjs';
-import { takeWhile, switchMap, tap, map } from 'rxjs/operators';
+import { interval, Subject } from 'rxjs';
+import { tap, map, debounceTime } from 'rxjs/operators';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,6 +29,11 @@ export class TimerComponent implements OnInit, OnChanges {
   @Input() public progress: number;
   @Input() public warningTimer: number;
   @Input() public block: Block;
+  @Input() public volume: number;
+
+  @ViewChild('audio', { static: true }) public audio: ElementRef<HTMLAudioElement>;
+
+  private play$ = new Subject();
 
   @HostBinding('attr.class')
   get backgroundClasses() {
@@ -33,9 +49,19 @@ export class TimerComponent implements OnInit, OnChanges {
   constructor(private cdr: ChangeDetectorRef) { }
 
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.progress && changes.progress.currentValue !== undefined && this.block) {
       this.currentProgress = this.block.value - this.progress;
+      if (
+        this.block.type === 'duration' &&
+        (this.currentProgress === this.block.value / 2 || // mid duration
+          this.currentProgress === this.warningTimer || // start ending time
+          this.currentProgress === 3 || // start ending time
+          this.currentProgress < 0.1 || // starting
+          this.currentProgress === this.block.value) // starting
+      ) {
+        this.playAudio();
+      }
     }
 
     if (changes.startTime && changes.startTime.currentValue) {
@@ -46,12 +72,24 @@ export class TimerComponent implements OnInit, OnChanges {
         );
     }
   }
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    this.audio.nativeElement.volume = this.volume;
+
+    this.play$
+      .pipe(
+        debounceTime(200),
+        tap(() => this.audio.nativeElement.play())
+      )
+      .subscribe();
   }
 
   public getDiffTime(time: moment.Moment) {
     this.cdr.markForCheck();
     return moment().diff(moment(time), 'seconds');
+  }
+
+  private playAudio() {
+    this.play$.next();
   }
 
 }

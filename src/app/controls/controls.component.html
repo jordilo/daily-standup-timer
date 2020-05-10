@@ -1,5 +1,5 @@
-<button [disabled]="status !== 2" (click)="prev()">Prev</button>
-<button [disabled]="status === 2" (click)="play()">Play</button>
-<button [disabled]="status !== 2" (click)="pause()">Pause</button>
-<button [disabled]="status === 0" (click)="stop()">Stop</button>
-<button [disabled]="status !== 2" (click)="next()">Next</button>
+<button class="material-icons"[disabled]="status !== 2" (click)="prev()">skip_previous</button>
+<button class="material-icons"[disabled]="status === 2" (click)="play()">play_arrow</button>
+<button class="material-icons"[disabled]="status !== 2" (click)="pause()">pause</button>
+<button class="material-icons"[disabled]="status === 0" (click)="stop()">stop</button>
+<button class="material-icons"[disabled]="status !== 2" (click)="next()">skip_next</button>

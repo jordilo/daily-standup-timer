@@ -1,3 +1,4 @@
+import { tap } from 'rxjs/operators';
 import { Helper } from './helper';
 import { Configuration } from './definitions/config-data.d';
 import { Injectable } from '@angular/core';
@@ -12,7 +13,7 @@ export class StoreService {
     return this.configurationSubject;
   }
   public get runningSettings$(): Observable<any> {
-    return this.runningSettingsSubject;
+    return this.runningSettingsSubject.pipe(tap((d) => console.log(d)));
   }
   private readonly SAVED_DATA_KEY = 'saved-configuration';
   private configurationSubject: BehaviorSubject<Configuration>;
@@ -26,7 +27,8 @@ export class StoreService {
     restDuration: 5,
     stepDuration: 60,
     totalIterations: 5,
-    warningTimer : 10
+    warningTimer: 10,
+    volume: 1
   };
   constructor() {
     const savedDataStr = localStorage.getItem(this.SAVED_DATA_KEY);
@@ -41,10 +43,10 @@ export class StoreService {
         return acc + configuration.restDuration + configuration.stepDuration;
       }, 0) - configuration.restDuration;
       const blocks = Helper.calculateBlocks(
-        this.configuration.totalIterations,
-        this.configuration.stepDuration,
-        this.configuration.restDuration);
-
+        configuration.totalIterations,
+        configuration.stepDuration,
+        configuration.restDuration);
+      console.log(configuration, blocks);
       this.runningSettingsSubject.next({
         blocks,
         totalDuration,

@@ -1,16 +1,18 @@
+@import '../../variables.scss';
 :host {
   display: flex;
-  flex: 1;
+  flex: 0;
   min-height: 20px;
   position: relative;
+  border-top: 2px solid white;
 }
 
 .block {
   &.duration {
-    background: green;
+    background: lighten($green,0.11) ;
   }
   &.rest {
-    background: yellow;
+    background: lighten($rest, 0.7);
   }
 }
 
@@ -18,6 +20,7 @@
   position: absolute;
   pointer-events: none;
   height: 100%;
+  border-top: 1vh solid white;
   background: rgba(255, 255, 255, 0.3);
   &.transition {
     transition: linear 100ms;

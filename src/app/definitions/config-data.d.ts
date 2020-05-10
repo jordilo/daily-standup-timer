@@ -3,6 +3,7 @@ export interface Configuration {
   totalIterations: number;
   restDuration: number;
   warningTimer: number;
+  volume: number;
 }
 
 export const enum TimerStatus {

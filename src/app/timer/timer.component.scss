@@ -1,12 +1,28 @@
+@import '../../variables.scss';
+
 :host {
   display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: $green;
+  color: white;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
   &.duration {
-    background: lightgreen;
+    background: $green;
   }
   &.rest {
-    background: lightblue;
+    background: $rest;
   }
   &.warning {
-    background: lightsalmon;
+    background: $warning;
+  }
+  .remaining-timer {
+    font-size: 15vw;
   }
 }
+
+
+
+
