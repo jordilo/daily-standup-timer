@@ -1,0 +1,31 @@
+<a [routerLink]="['']">Back</a>
+<form [formGroup]="form"
+      (ngSubmit)="save()">
+
+  <div class="form-group">
+    <label>People in meeting</label>
+    <input type="number"
+           formControlName="totalIterations" />
+  </div>
+  <div class="form-group">
+    <label>Duration</label>
+    <input type="number"
+           formControlName="stepDuration" />
+  </div>
+  <div class="form-group">
+    <label>Time between rotation</label>
+    <input type="number"
+           formControlName="restDuration" />
+  </div>
+  <div class="form-group">
+    <label>Warning time</label>
+    <input type="number"
+           formControlName="warningTimer" />
+  </div>
+  <app-summary-graph [iterations]="form.value.totalIterations"
+                     [duration]="form.value.stepDuration"
+                     [restDuration]="form.value.restDuration"></app-summary-graph>
+  <div class="form-group">
+    <button [disabled]="form.invalid || form.pristine">Save</button>
+  </div>
+</form>

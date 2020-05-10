@@ -1,0 +1,8 @@
+<div *ngFor="let block of blocks ; trackBy : trackbyFn"
+     class="block"
+     (click)="blockClicked(block)"
+     [style.flex]="block.value"
+     [ngClass]="block.type"></div>
+<div class="progress"
+     #progressBar
+     [style.width]="progress + '%'"></div>

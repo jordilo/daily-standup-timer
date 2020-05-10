@@ -1,0 +1,29 @@
+<div *ngIf="{
+              config:configuration$ | async,
+              status : timerStatus$ | async,
+              startTime: startTimeStatus$ | async,
+              execution: progress$  | async,
+              runningSettings: runninfSettings$ | async
+            } as data">
+  <app-timer [startTime]="data.startTime"
+             [warningTimer]="data.config.warningTimer"
+             [block]="data.execution?.currentBlock"
+             [progress]="data.execution?.progress - data.execution?.currentDuration"></app-timer>
+  <div>{{ (data.execution?.currentIndex / 2 || 0 )+ 1}}/{{data.config.totalIterations}}</div>
+  <app-controls [status]="data.status"
+                (doPrev)="selectGraph(data.runningSettings.blocks[data.execution.currentIndex-1])"
+                (doNext)="selectGraph(data.runningSettings.blocks[data.execution.currentIndex+1])"
+                (doPause)="pause()"
+                (doPlay)="play(data.runningSettings.blocks)"
+                (doStop)="stop()"></app-controls>
+  <app-summary-graph [transition]="data.status == 2"
+                     [iterations]="data.config.totalIterations"
+                     [duration]="data.config.stepDuration"
+                     [progress]="data.execution?.progress"
+                     [totalDuration]="data.runningSettings.totalDuration"
+                     [restDuration]="data.config.restDuration"
+                     (selectGraph)="selectGraph($event)"></app-summary-graph>
+  <button [disabled]="data.status !== 0"
+          [routerLink]="['/settings']"
+          routerLinkbuttonctive="router-link-active">Settings</button>
+</div>

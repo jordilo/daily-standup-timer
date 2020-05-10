@@ -1,0 +1,5 @@
+<button [disabled]="status !== 2" (click)="prev()">Prev</button>
+<button [disabled]="status === 2" (click)="play()">Play</button>
+<button [disabled]="status !== 2" (click)="pause()">Pause</button>
+<button [disabled]="status === 0" (click)="stop()">Stop</button>
+<button [disabled]="status !== 2" (click)="next()">Next</button>

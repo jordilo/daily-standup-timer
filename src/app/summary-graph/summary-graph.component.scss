@@ -1,0 +1,25 @@
+:host {
+  display: flex;
+  flex: 1;
+  min-height: 20px;
+  position: relative;
+}
+
+.block {
+  &.duration {
+    background: green;
+  }
+  &.rest {
+    background: yellow;
+  }
+}
+
+.progress {
+  position: absolute;
+  pointer-events: none;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  &.transition {
+    transition: linear 100ms;
+  }
+}
