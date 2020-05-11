@@ -1,25 +1,44 @@
 {
   "name": "@jordilo/daily-standup-timer",
   "version": "0.0.2",
-  "main": "electron/dist/main.js",
+  "main": "dist/main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-electron": "tsc -p electron && electron .",
+    "build-electron": "tsc -p electron && electron ./dist/main.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "only-electon": "electron electron/dist/main.js",
-    "package-mac": "electron-builder --dir ",
-    "electron": "ng build --base-href \"./\" && tsc -p electron && electron ."
+    "only-electon": "electron dist/main.js",
+    "package": "ng build --prod && tsc -p electron && electron-builder --dir ",
+    "electron": "ng build && npm run build-electron",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "asar": false,
+    "productName": "Daily Standup timer",
+    "appId": "com.electron.jordilo-daily-standup-timer",
+    "files": [
+      "**/*",
+      "!node_modules/",
+      "!src/",
+      "dist/daily-standup-timer/**/*"
+    ],
+    "directories": {
+      "output": "release",
+      "buildResources": "dist/daily-standup-timer"
+    },
+    "mac": {
+      "category": "com.electron.jordilo-daily-standup-timer.type"
+    }
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.1.0",
     "@angular/common": "~9.1.0",
     "@angular/compiler": "~9.1.0",
-    "@angular/core": "~9.1.0",
+    "@angular/core": "^9.1.6",
     "@angular/forms": "~9.1.0",
     "@angular/platform-browser": "~9.1.0",
     "@angular/platform-browser-dynamic": "~9.1.0",
@@ -33,7 +52,7 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "^9.1.0",
     "@angular-devkit/build-angular": "~0.901.0",
-    "@angular/cli": "~9.1.0",
+    "@angular/cli": "^9.1.5",
     "@angular/compiler-cli": "~9.1.0",
     "@angular/language-service": "~9.1.0",
     "@types/electron": "^1.6.10",
