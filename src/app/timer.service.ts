@@ -83,19 +83,12 @@ export class TimerService {
       }),
       map((d) => this.lastDurationCounter + (d / this.INTERVAL_RATIO)),
       tap((lastDuration) => this.lastDuration = lastDuration),
-      tap((duration) => {
-        if (duration >= this.totalDuration) {
-          this.stop();
-        } else {
-          this.statusSubject.next(TimerStatus.RUNNING);
-        }
-      }),
       map((progress) => {
         const currentIndex = this.blocks.findIndex((acc) => acc.start <= progress && acc.end > progress, 0);
         const currentDuration = this.blocks.reduce((acc, current, index) => {
           return index < currentIndex ? (acc += current.value) : acc;
         }, 0);
-        const currentBlock = this.blocks[currentIndex];
+        const currentBlock = this.statusSubject.value !== TimerStatus.STOPPED ? this.blocks[currentIndex] : 0;
         const startTime = this.startTime;
         const currentStatus = this.statusSubject.value;
         return {
@@ -106,7 +99,16 @@ export class TimerService {
           progress,
           startTime
         };
-      })
+      }),
+      tap(({ progress }) => {
+        console.log(progress);
+        if (progress >= this.totalDuration) {
+          this.stop();
+        } else {
+          this.statusSubject.next(TimerStatus.RUNNING);
+        }
+      }),
+      takeWhile(({ progress }) => progress <= this.totalDuration, true)
     );
   }
 }
