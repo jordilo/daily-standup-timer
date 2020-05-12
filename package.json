@@ -20,10 +20,9 @@
     "productName": "Daily Standup timer",
     "appId": "com.electron.jordilo-daily-standup-timer",
     "files": [
-      "**/*",
       "!node_modules/",
       "!src/",
-      "dist/daily-standup-timer/**/*"
+      "dist/**/*"
     ],
     "directories": {
       "output": "release",
