@@ -71,39 +71,44 @@ export class TimerService {
   }
 
   private setTimer() {
-    if (!this.timerSubject.closed) {
-      this.timer$ = this.timerSubject.pipe(
-        switchMap((value) => value && this.startTime ? timer(0, this.INTERVAL) : NEVER),
-        tap((d) => {
-          if (this.forceLastDuration) {
-            this.lastDurationCounter -= d / this.INTERVAL_RATIO;
-            this.forceLastDuration = false;
-          }
-        }),
-        map((d) => this.lastDurationCounter + (d / this.INTERVAL_RATIO)),
-        tap(() => this.statusSubject.next(TimerStatus.RUNNING)),
-        tap((lastDuration) => this.lastDuration = lastDuration),
-        takeWhile((d) => d <= this.totalDuration, true),
-        map((progress) => {
-          const currentIndex = this.blocks.findIndex((acc) => acc.start <= progress && acc.end > progress, 0);
-          const currentDuration = this.blocks.reduce((acc, current, index) => {
-            return index < currentIndex ? (acc += current.value) : acc;
-          }, 0);
-          const currentBlock = this.blocks[currentIndex];
-          const startTime = this.startTime;
-          const currentStatus = this.statusSubject.value;
-          return {
-            currentIndex,
-            currentDuration,
-            currentBlock,
-            currentStatus,
-            progress,
-            startTime
-          };
-        })
-      );
-    } else {
+    if (this.timerSubject.closed) {
       this.timerSubject = new BehaviorSubject(true);
     }
+    this.timer$ = this.timerSubject.pipe(
+      switchMap((value) => value && this.startTime ? timer(0, this.INTERVAL) : NEVER),
+      tap((d) => {
+        if (this.forceLastDuration) {
+          this.lastDurationCounter -= d / this.INTERVAL_RATIO;
+          this.forceLastDuration = false;
+        }
+      }),
+      map((d) => this.lastDurationCounter + (d / this.INTERVAL_RATIO)),
+      tap((lastDuration) => this.lastDuration = lastDuration),
+      tap((duration) => {
+        if (duration > this.totalDuration) {
+          this.timerSubject.next(false);
+          this.statusSubject.next(TimerStatus.STOPPED);
+        } else {
+          this.statusSubject.next(TimerStatus.RUNNING);
+        }
+      }),
+      map((progress) => {
+        const currentIndex = this.blocks.findIndex((acc) => acc.start <= progress && acc.end > progress, 0);
+        const currentDuration = this.blocks.reduce((acc, current, index) => {
+          return index < currentIndex ? (acc += current.value) : acc;
+        }, 0);
+        const currentBlock = this.blocks[currentIndex];
+        const startTime = this.startTime;
+        const currentStatus = this.statusSubject.value;
+        return {
+          currentIndex,
+          currentDuration,
+          currentBlock,
+          currentStatus,
+          progress,
+          startTime
+        };
+      })
+    );
   }
 }
