@@ -25,7 +25,7 @@ import { tap, map, debounceTime } from 'rxjs/operators';
 })
 export class TimerComponent implements OnInit, OnChanges {
 
-  @Input() public startTime: moment.Moment;
+  @Input() public startTime: moment.Moment[];
   @Input() public progress: number;
   @Input() public warningTimer: number;
   @Input() public block: Block;
@@ -53,21 +53,21 @@ export class TimerComponent implements OnInit, OnChanges {
     if (changes.progress && changes.progress.currentValue !== undefined && this.block) {
       this.currentProgress = this.block.value - this.progress;
       if (
-        this.block.type === 'duration' &&
-        (this.currentProgress === this.block.value / 2 || // mid duration
-          this.currentProgress === this.warningTimer || // start ending time
-          this.currentProgress === 3 || // start ending time
-          this.currentProgress < 0.1 || // starting
-          this.currentProgress === this.block.value) // starting
-      ) {
-        this.playAudio();
+        this.block.type === 'duration') {
+        if (this.currentProgress === this.block.value / 2) {
+          this.audio.nativeElement.volume = this.volume / 2;
+          this.playAudio();
+        } else if (this.currentProgress === this.warningTimer || this.currentProgress < 0.15) {
+          this.audio.nativeElement.volume = this.volume;
+          this.playAudio();
+        }
       }
     }
 
     if (changes.startTime && changes.startTime.currentValue) {
       this.timer$ = interval(500).
         pipe(
-          map(() => moment().diff(moment(this.startTime), 'seconds')),
+          map(() => (this.startTime[1] || moment()).diff(moment(this.startTime[0]), 'seconds')),
           tap(() => this.cdr.markForCheck())
         );
     }

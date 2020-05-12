@@ -16,7 +16,7 @@ export class MainComponent implements OnInit {
   public configuration$: Observable<Configuration>;
   public runningSettings$: Observable<Configuration>;
   public timerStatus$: Observable<TimerStatus>;
-  public startTimeStatus$: Observable<moment.Moment>;
+  public startTimeStatus$: Observable<moment.Moment[]>;
 
   public progress$: Observable<any>;
   public totalDuration: number;

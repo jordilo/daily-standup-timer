@@ -12,14 +12,14 @@ import { TimerStatus } from './definitions/config-data';
 export class TimerService {
 
   public timer$: Observable<any>;
-  public timerStart$: Observable<moment.Moment>;
+  public timerStart$: Observable<moment.Moment[]>;
   public status$: Observable<TimerStatus>;
 
   private totalDuration: number;
   private startTime: moment.Moment;
   private timerSubject: BehaviorSubject<boolean>;
   private statusSubject: BehaviorSubject<TimerStatus>;
-  private startTimeSubject: BehaviorSubject<moment.Moment>;
+  private durationTimeSubject: BehaviorSubject<moment.Moment[]>;
   private lastDurationCounter = 0;
   private lastDuration = 0;
   private blocks: Block[];
@@ -35,16 +35,16 @@ export class TimerService {
 
     this.status$ = this.statusSubject = new BehaviorSubject<TimerStatus>(TimerStatus.STOPPED);
     this.timerSubject = new BehaviorSubject<boolean>(false);
-    this.startTimeSubject = new BehaviorSubject<moment.Moment>(null);
-    this.timerStart$ = this.startTimeSubject;
+    this.durationTimeSubject = new BehaviorSubject<moment.Moment[]>([]);
+    this.timerStart$ = this.durationTimeSubject;
     this.setTimer();
   }
   public play(blocks: Block[]) {
     this.blocks = blocks;
-    if (!this.startTime) {
+    if (this.statusSubject.value === TimerStatus.STOPPED) {
       this.startTime = moment();
       this.lastDuration = 0;
-      this.startTimeSubject.next(this.startTime);
+      this.durationTimeSubject.next([this.startTime, undefined]);
     }
     this.timerSubject.next(true);
     this.setTimer();
@@ -58,9 +58,8 @@ export class TimerService {
   public stop() {
     this.lastDurationCounter = this.lastDuration = 0;
     this.timerSubject.next(false);
-    this.startTime = null;
     this.statusSubject.next(TimerStatus.STOPPED);
-    this.startTimeSubject.next(null);
+    this.durationTimeSubject.next([this.startTime, moment()]);
   }
 
   public moveTo(position: number) {
@@ -85,9 +84,8 @@ export class TimerService {
       map((d) => this.lastDurationCounter + (d / this.INTERVAL_RATIO)),
       tap((lastDuration) => this.lastDuration = lastDuration),
       tap((duration) => {
-        if (duration > this.totalDuration) {
-          this.timerSubject.next(false);
-          this.statusSubject.next(TimerStatus.STOPPED);
+        if (duration >= this.totalDuration) {
+          this.stop();
         } else {
           this.statusSubject.next(TimerStatus.RUNNING);
         }

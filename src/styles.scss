@@ -5,8 +5,10 @@ body {
   margin: 0;
   font-family: $font;
   font-weight: lighter;
+  overflow: hidden;
 }
 
-body, html{
+body,
+html {
   height: 100%;
 }
