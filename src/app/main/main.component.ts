@@ -50,6 +50,10 @@ export class MainComponent implements OnInit {
   public moveTo(blocks: Block[], position: number) {
 
   }
+
+  public updateVolupe(volume: number, settings: Configuration) {
+    this.store.save({ ...settings, volume } as Configuration);
+  }
 }
 
 

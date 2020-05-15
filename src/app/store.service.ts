@@ -13,7 +13,7 @@ export class StoreService {
     return this.configurationSubject;
   }
   public get runningSettings$(): Observable<any> {
-    return this.runningSettingsSubject.pipe(tap((d) => console.log(d)));
+    return this.runningSettingsSubject;
   }
   private readonly SAVED_DATA_KEY = 'saved-configuration';
   private configurationSubject: BehaviorSubject<Configuration>;
@@ -46,7 +46,6 @@ export class StoreService {
         configuration.totalIterations,
         configuration.stepDuration,
         configuration.restDuration);
-      console.log(configuration, blocks);
       this.runningSettingsSubject.next({
         blocks,
         totalDuration,

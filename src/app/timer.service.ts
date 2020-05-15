@@ -101,7 +101,6 @@ export class TimerService {
         };
       }),
       tap(({ progress }) => {
-        console.log(progress);
         if (progress >= this.totalDuration) {
           this.stop();
         } else {

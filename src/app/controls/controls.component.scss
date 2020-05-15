@@ -1,9 +1,26 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 :host {
   display: flex;
   flex: 0;
   button {
     flex: 1;
     padding: $padding;
+  }
+  .controls-volume {
+    position: absolute;
+    width: 100px;
+    z-index: 1000;
+    right: 0;
+    height: 50px;
+    input {
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      position: absolute;
+      top: 30px;
+      transform: rotateZ(-90deg);
+      height: 50px;
+      -webkit-transform-origin-x: left;
+      -webkit-transform-origin-y: top;
+    }
   }
 }

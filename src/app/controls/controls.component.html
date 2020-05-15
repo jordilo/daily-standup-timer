@@ -1,5 +1,25 @@
-<button class="material-icons"[disabled]="status !== 2" (click)="prev()">skip_previous</button>
-<button class="material-icons"[disabled]="status === 2" (click)="play()">play_arrow</button>
-<button class="material-icons"[disabled]="status !== 2" (click)="pause()">pause</button>
-<button class="material-icons"[disabled]="status === 0" (click)="stop()">stop</button>
-<button class="material-icons"[disabled]="status !== 2" (click)="next()">skip_next</button>
+<button class="material-icons"
+        [disabled]="status !== 2"
+        (click)="prev()">skip_previous</button>
+<button class="material-icons"
+        *ngIf="status < 2"
+        (click)="play()">play_arrow</button>
+<button class="material-icons"
+        *ngIf="status === 2"
+        (click)="pause()">pause</button>
+<button class="material-icons"
+        [disabled]="status === 0"
+        (click)="stop()">stop</button>
+<button class="material-icons"
+        [disabled]="status !== 2"
+        (click)="next()">skip_next</button>
+<button class="material-icons"
+        (click)="toggleVolume()">volume_up</button>
+<div class="controls-volume"
+     *ngIf="isVisibleVolume">
+  <input type="range"
+         [formControl]="volumentControl"
+         [min]="0"
+         [max]="1"
+         [step]="0.1" />
+</div>
