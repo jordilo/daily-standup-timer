@@ -5,13 +5,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build-dev": "ng build",
     "build-electron": "tsc -p electron && electron ./dist/main.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "only-electon": "electron dist/main.js",
-    "package": "ng build --prod && tsc -p electron && electron-builder --dir ",
+    "build": "ng build --prod && tsc -p electron && electron-builder --dir -w",
     "electron": "ng build && npm run build-electron",
     "postinstall": "electron-builder install-app-deps",
     "update-version": "npm version patch && now -e ACCOUNT=\"jordilo\" -e REPOSITORY=\"daily-standup-timer\""
