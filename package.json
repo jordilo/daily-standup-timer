@@ -1,6 +1,6 @@
 {
   "name": "@jordilo/daily-standup-timer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/main.js",
   "scripts": {
     "ng": "ng",
@@ -14,7 +14,7 @@
     "package": "ng build --prod && tsc -p electron && electron-builder --dir ",
     "electron": "ng build && npm run build-electron",
     "postinstall": "electron-builder install-app-deps",
-    "update-version":"npm version patch && now -e ACCOUNT=\"jordilo\" -e REPOSITORY=\"daily-standup-timer\""
+    "update-version": "npm version patch && now -e ACCOUNT=\"jordilo\" -e REPOSITORY=\"daily-standup-timer\""
   },
   "build": {
     "asar": false,
