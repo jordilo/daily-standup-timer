@@ -21,11 +21,13 @@
                      [restDuration]="data.config.restDuration"
                      (selectGraph)="selectGraph($event)"></app-summary-graph>
   <app-controls [status]="data.status"
+                [volume]="data.config.volume"
                 (doPrev)="selectGraph(data.runningSettings.blocks[data.execution.currentIndex-1])"
                 (doNext)="selectGraph(data.runningSettings.blocks[data.execution.currentIndex+1])"
                 (doPause)="pause()"
                 (doPlay)="play(data.runningSettings.blocks)"
-                (doStop)="stop()"></app-controls>
+                (doStop)="stop()"
+                (changeVolume)="updateVolupe($event , data.config)"></app-controls>
 
   <button class="configuration material-icons"
           [disabled]="data.status !== 0"
