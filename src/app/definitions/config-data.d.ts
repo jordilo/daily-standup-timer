@@ -19,3 +19,18 @@ export interface Block {
   start?: number;
   end?: number;
 }
+
+
+export interface Execution {
+  currentIndex: number;
+  currentDuration: number;
+  currentBlock: Block;
+  currentStatus: TimerStatus;
+  progress: number;
+  startTime: moment.Moment;
+  finishTime: moment.Moment;
+}
+
+export interface ExecutionData extends Execution {
+  configuration: Configuration;
+}

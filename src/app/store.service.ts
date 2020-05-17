@@ -1,8 +1,7 @@
-import { tap } from 'rxjs/operators';
 import { Helper } from './helper';
-import { Configuration } from './definitions/config-data.d';
+import { Configuration, ExecutionData, Execution } from './definitions/config-data.d';
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, BehaviorSubject, timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,9 @@ export class StoreService {
     return this.runningSettingsSubject;
   }
   private readonly SAVED_DATA_KEY = 'saved-configuration';
+  private readonly EXECUTIONS_DATA_KEY = 'saved-executions';
   private configurationSubject: BehaviorSubject<Configuration>;
+  private savedExecutions: ExecutionData[] = [];
   private runningSettingsSubject: BehaviorSubject<any>;
 
   private runningSettings = {
@@ -39,6 +40,7 @@ export class StoreService {
     this.runningSettingsSubject = new BehaviorSubject<any>(this.runningSettings);
 
     this.configurationSubject.subscribe((configuration) => {
+      this.configuration = configuration;
       const totalDuration = [...Array(configuration.totalIterations).keys()].reduce((acc) => {
         return acc + configuration.restDuration + configuration.stepDuration;
       }, 0) - configuration.restDuration;
@@ -51,11 +53,23 @@ export class StoreService {
         totalDuration,
       });
     });
+
+    // EXECUTIONS
+    const savedExecutionsStr = localStorage.getItem(this.EXECUTIONS_DATA_KEY);
+    if (savedExecutionsStr) {
+      this.savedExecutions = JSON.parse(savedExecutionsStr);
+    }
   }
 
   public save(configuration: Configuration) {
     localStorage.setItem(this.SAVED_DATA_KEY, JSON.stringify(configuration));
     this.configurationSubject.next(configuration);
+  }
+  public pushExecution(execution: Execution) {
+    timer(0).subscribe(() => {
+      this.savedExecutions.push({ ...execution, configuration: this.configuration });
+      localStorage.setItem(this.EXECUTIONS_DATA_KEY, JSON.stringify(this.savedExecutions));
+    });
   }
 
   public patch(configuration: Configuration) {

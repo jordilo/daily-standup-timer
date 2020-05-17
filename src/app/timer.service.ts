@@ -1,4 +1,4 @@
-import { Block } from './definitions/config-data.d';
+import { Block, Execution } from './definitions/config-data.d';
 import { StoreService } from './store.service';
 import { Observable, interval, EMPTY, NEVER, timer, BehaviorSubject, of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -26,6 +26,7 @@ export class TimerService {
   private forceLastDuration: boolean;
   private readonly INTERVAL = 100;
   private readonly INTERVAL_RATIO = 1000 / this.INTERVAL;
+  private currentExecution: Execution;
   constructor(private storeService: StoreService) {
 
     this.storeService.runningSettings$
@@ -65,7 +66,9 @@ export class TimerService {
     this.lastDurationCounter = this.lastDuration = 0;
     this.timerSubject.next(false);
     this.statusSubject.next(TimerStatus.STOPPED);
-    this.durationTimeSubject.next([this.startTime, moment()]);
+    const finishTime = moment();
+    this.durationTimeSubject.next([this.startTime, finishTime]);
+    this.storeService.pushExecution({ ...this.currentExecution, finishTime });
   }
 
   public moveTo(position: number) {
@@ -90,9 +93,13 @@ export class TimerService {
       map((d) => this.lastDurationCounter + (d / this.INTERVAL_RATIO)),
       tap((lastDuration) => this.lastDuration = lastDuration),
       map((progress) => {
+        let currentDuration = 0;
+        let currentBlock = null;
         const currentIndex = this.blocks.findIndex((acc) => acc.start <= progress && acc.end > progress, 0);
-        const currentDuration = this.blocks[currentIndex].end - progress;
-        const currentBlock = this.statusSubject.value !== TimerStatus.STOPPED ? this.blocks[currentIndex] : 0;
+        if (currentIndex >= 0) {
+          currentDuration = this.blocks[currentIndex].end - progress;
+          currentBlock = this.statusSubject.value !== TimerStatus.STOPPED ? this.blocks[currentIndex] : null;
+        }
         const startTime = this.startTime;
         const currentStatus = this.statusSubject.value;
         return {
@@ -101,9 +108,11 @@ export class TimerService {
           currentBlock,
           currentStatus,
           progress,
-          startTime
-        };
+          startTime,
+          finishTime: null
+        } as Execution;
       }),
+      tap((execution) => this.currentExecution = execution),
       tap(({ progress }) => {
         if (progress >= this.totalDuration) {
           this.stop();
