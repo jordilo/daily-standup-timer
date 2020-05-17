@@ -58,5 +58,10 @@ export class StoreService {
     this.configurationSubject.next(configuration);
   }
 
+  public patch(configuration: Configuration) {
+    const config = { ...this.configurationSubject.value, ...configuration };
+    this.save(config);
+  }
+
 
 }

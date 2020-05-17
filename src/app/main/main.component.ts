@@ -1,8 +1,7 @@
 import { StoreService } from './../store.service';
 import { Configuration, TimerStatus, Block } from './../definitions/config-data.d';
 import { Component, OnInit } from '@angular/core';
-import { Observable, timer, interval, of } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { TimerService } from '../timer.service';
 import * as moment from 'moment';
 
@@ -21,6 +20,7 @@ export class MainComponent implements OnInit {
   public progress$: Observable<any>;
   public totalDuration: number;
   public duration: number;
+
   constructor(private store: StoreService, private timerService: TimerService) { }
 
   public ngOnInit(): void {
@@ -50,8 +50,10 @@ export class MainComponent implements OnInit {
   public moveTo(blocks: Block[], position: number) {
 
   }
-
-  public updateVolupe(volume: number, settings: Configuration) {
+  public saveConfiguration(configuration: Configuration, settings: Configuration) {
+    this.store.save({ ...settings, ...configuration });
+  }
+  public updateVolume(volume: number, settings: Configuration) {
     this.store.save({ ...settings, volume } as Configuration);
   }
 }

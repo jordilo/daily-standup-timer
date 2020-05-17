@@ -2,7 +2,7 @@ import { Block } from './definitions/config-data.d';
 import { StoreService } from './store.service';
 import { Observable, interval, EMPTY, NEVER, timer, BehaviorSubject, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { switchMap, map, takeUntil, tap, takeWhile, repeatWhen } from 'rxjs/operators';
+import { switchMap, map, takeUntil, tap, takeWhile, repeatWhen, distinctUntilChanged } from 'rxjs/operators';
 import * as moment from 'moment';
 import { TimerStatus } from './definitions/config-data';
 
@@ -28,9 +28,15 @@ export class TimerService {
   private readonly INTERVAL_RATIO = 1000 / this.INTERVAL;
   constructor(private storeService: StoreService) {
 
-    this.storeService.runningSettings$.subscribe(({ totalDuration }) => {
-      this.totalDuration = totalDuration;
-    });
+    this.storeService.runningSettings$
+      .pipe(
+        map(({ totalDuration, blocks }) => ({ totalDuration, blocks })),
+        distinctUntilChanged()
+      )
+      .subscribe(({ totalDuration, blocks }) => {
+        this.totalDuration = totalDuration;
+        this.blocks = blocks;
+      });
 
 
     this.status$ = this.statusSubject = new BehaviorSubject<TimerStatus>(TimerStatus.STOPPED);
@@ -85,9 +91,7 @@ export class TimerService {
       tap((lastDuration) => this.lastDuration = lastDuration),
       map((progress) => {
         const currentIndex = this.blocks.findIndex((acc) => acc.start <= progress && acc.end > progress, 0);
-        const currentDuration = this.blocks.reduce((acc, current, index) => {
-          return index < currentIndex ? (acc += current.value) : acc;
-        }, 0);
+        const currentDuration = this.blocks[currentIndex].end - progress;
         const currentBlock = this.statusSubject.value !== TimerStatus.STOPPED ? this.blocks[currentIndex] : 0;
         const startTime = this.startTime;
         const currentStatus = this.statusSubject.value;

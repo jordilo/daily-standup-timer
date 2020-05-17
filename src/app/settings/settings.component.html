@@ -1,4 +1,8 @@
-<a [routerLink]="['']">Back</a>
+<div class="header material-icons">
+  <a [routerLink]="['']">keyboard_backspace</a>
+  <button (click)="save()"
+          [disabled]="form.invalid || form.pristine">Save</button>
+</div>
 <form [formGroup]="form"
       (ngSubmit)="save()">
 
@@ -29,12 +33,9 @@
            max="1"
            step="0.05"
            formControlName="volume" />
-           <span>{{form.value.volume * 100 }}%</span>
-  </div>
-  <app-summary-graph [iterations]="form.value.totalIterations"
-                     [duration]="form.value.stepDuration"
-                     [restDuration]="form.value.restDuration"></app-summary-graph>
-  <div class="form-group">
-    <button [disabled]="form.invalid || form.pristine">Save</button>
+    <span>{{form.value.volume * 100 | number : '1.0-0'}}%</span>
   </div>
 </form>
+<app-summary-graph [iterations]="form.value.totalIterations"
+                   [duration]="form.value.stepDuration"
+                   [restDuration]="form.value.restDuration"></app-summary-graph>

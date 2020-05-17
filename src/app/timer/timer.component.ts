@@ -26,7 +26,7 @@ import { tap, map, debounceTime } from 'rxjs/operators';
 export class TimerComponent implements OnInit, OnChanges {
 
   @Input() public startTime: moment.Moment[];
-  @Input() public progress: number;
+  @Input() public remainingBlockTime: number;
   @Input() public warningTimer: number;
   @Input() public block: Block;
   @Input() public volume: number;
@@ -37,27 +37,25 @@ export class TimerComponent implements OnInit, OnChanges {
 
   @HostBinding('attr.class')
   get backgroundClasses() {
-    const isWarning = this.currentProgress < this.warningTimer && (this.block?.type === 'duration');
+    const isWarning = this.remainingBlockTime < this.warningTimer && (this.block?.type === 'duration');
     return [
       this.block?.type,
       isWarning ? 'warning' : ''
     ].filter(Boolean).join(' ');
   }
 
-  public currentProgress = 0;
   public timer$: Observable<number>;
   constructor(private cdr: ChangeDetectorRef) { }
 
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.progress && changes.progress.currentValue !== undefined && this.block) {
-      this.currentProgress = this.block.value - this.progress;
-      if (
-        this.block.type === 'duration') {
-        if (this.currentProgress === this.block.value / 2) {
+    if (changes.remainingBlockTime && changes.remainingBlockTime.currentValue !== undefined && this.block) {
+      if (this.block.type === 'duration') {
+
+        if (this.remainingBlockTime === this.block.value / 2) {
           this.audio.nativeElement.volume = this.volume / 2;
           this.playAudio();
-        } else if (this.currentProgress === this.warningTimer || this.currentProgress < 0.15) {
+        } else if (this.remainingBlockTime === this.warningTimer || this.remainingBlockTime < 0.15) {
           this.audio.nativeElement.volume = this.volume;
           this.playAudio();
         }

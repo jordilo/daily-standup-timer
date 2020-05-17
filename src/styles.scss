@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import "./variables.scss";
 
 /* You can add global styles to this file, and also import other style files */
 body {
@@ -6,9 +6,15 @@ body {
   font-family: $font;
   font-weight: lighter;
   overflow: hidden;
+  display: flex;
 }
 
 body,
 html {
   height: 100%;
+}
+
+app-root {
+  flex: 1;
+  display: flex;
 }

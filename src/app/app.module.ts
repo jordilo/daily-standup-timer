@@ -11,6 +11,7 @@ import { TimerComponent } from './timer/timer.component';
 import { SummaryGraphComponent } from './summary-graph/summary-graph.component';
 import { FormatTimerPipe } from './format-timer.pipe';
 import { MillisecondsPipe } from './milliseconds.pipe';
+import { QuickSettingsComponent } from './quick-settings/quick-settings.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MillisecondsPipe } from './milliseconds.pipe';
     TimerComponent,
     SummaryGraphComponent,
     FormatTimerPipe,
-    MillisecondsPipe
+    MillisecondsPipe,
+    QuickSettingsComponent
   ],
   imports: [
     BrowserModule,
