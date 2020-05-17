@@ -5,22 +5,27 @@
   button {
     flex: 1;
     padding: $padding;
+    position: relative;
   }
   .controls-volume {
     position: absolute;
-    width: 100px;
+    width: 100%;
     z-index: 1000;
-    right: 0;
+    top: 0;
+    left: 0;
     height: 50px;
+    display: flex;
+    justify-content: center;
     input {
       background: rgba(255, 255, 255, 0.5);
       border-radius: 10px;
-      position: absolute;
-      top: 30px;
+      position: relative;
+      top: -50px;
+      width: 100px;
       transform: rotateZ(-90deg);
       height: 50px;
-      -webkit-transform-origin-x: left;
-      -webkit-transform-origin-y: top;
+      -webkit-transform-origin-x: center;
+      -webkit-transform-origin-y: center;
     }
   }
 }
