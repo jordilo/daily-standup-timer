@@ -19,5 +19,6 @@ steps:
   displayName: 'Installing wine'
 - script: |
     npm install
-    npm run build
-  displayName: 'npm install and build'
+    npm test
+    npm run build-dev
+  displayName: 'npm install, test and build'
