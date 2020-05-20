@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build-dev": "ng build",
     "build-electron": "tsc -p electron && electron ./dist/main.js",
-    "test": "ng test",
+    "test": "ng test --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "only-electon": "electron dist/main.js",
