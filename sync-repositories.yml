@@ -1,0 +1,19 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: swellaby.mirror-git-repository.mirror-git-repository-vsts-task.mirror-git-repository-vsts-task@1
+  displayName: "Mirror Git Repository"
+  inputs:
+    sourceGitRepositoryUri: "https://github.com/jordilo/daily-standup-timer.git"
+    sourceVerifySSLCertificate: false
+    destinationGitRepositoryUri: "https://jordilo.visualstudio.com/Daily%20Standup%20timer/_git/DailyStandupTimer"
+    destinationGitRepositoryPersonalAccessToken: "$(destVar)"
