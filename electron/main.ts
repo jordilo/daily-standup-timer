@@ -4,7 +4,7 @@ import * as url from 'url';
 
 let win: BrowserWindow;
 
-// const server = 'https://daily-standup-timer-updater-hc0v9umil.now.sh/';
+// const server = 'https://daily-standup-timer-updater-hc0v9umil.now.sh';
 // const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
 
 // autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
