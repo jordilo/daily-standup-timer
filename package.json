@@ -8,6 +8,7 @@
     "build-dev": "ng build",
     "build-electron": "tsc -p electron && electron ./dist/main.js",
     "test": "ng test --code-coverage",
+    "compile-electron": "tsc -p electron",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "only-electon": "electron dist/main.js",
