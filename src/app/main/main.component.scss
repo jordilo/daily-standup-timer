@@ -1,20 +1,26 @@
 @import '../../variables.scss';
+
 :host {
   display: flex;
   flex-direction: column;
-  flex:1;
+  flex: 1;
   height: 100%;
-  .container{
+
+  .container {
     display: flex;
     flex-direction: column;
     height: 100%;
   }
+
   .configuration {
     position: absolute;
     top: $padding;
     right: $padding;
-    background-color: transparent;
-    color: white;
-    border: none;
+
+    button {
+      background-color: transparent;
+      color: white;
+      border: none;
+    }
   }
 }

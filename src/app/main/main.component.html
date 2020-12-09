@@ -31,9 +31,14 @@
                 (doPlay)="play(data.runningSettings.blocks)"
                 (doStop)="stop()"
                 (changeVolume)="updateVolume($event , data.config)"></app-controls>
-
-  <button class="configuration material-icons"
-          [disabled]="data.status !== 0"
-          [routerLink]="['/settings']"
-          routerLinkbuttonctive="router-link-active">settings</button>
+  <div class="configuration">
+    <button class="material-icons"
+            [disabled]="data.status !== 0"
+            [routerLink]="['/settings']"
+            routerLinkbuttonctive="router-link-active">settings</button>
+    <button class="material-icons"
+            [disabled]="data.status !== 0"
+            [routerLink]="['/statistics']"
+            routerLinkbuttonctive="router-link-active">show_chart</button>
+  </div>
 </div>

@@ -1,0 +1,28 @@
+<div class="header material-icons">
+  <a [routerLink]="['']">keyboard_backspace</a>
+</div>
+<div class="body">
+  <canvas baseChart
+          [datasets]="lineChartData"
+          [labels]="lineChartLabels"
+          [options]="lineChartOptions"
+          chartType="line"></canvas>
+
+  <!-- (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)" -->
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let d of data">
+      <td>{{d.date}}</td>
+      <td>{{d.diffStr }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,42 @@
+@import "../../variables.scss";
+
+$distance: 20px;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  overflow-y: overlay;
+  overflow-x: hidden;
+  max-height: 100%;
+  flex: 1;
+
+  .header {
+    flex: 0 0 50px;
+    align-items: center;
+    display: flex;
+    background: $green;
+    padding: 0 $distance;
+    justify-content: space-between;
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+      color: white;
+      font-size: 14px;
+      font-weight: bolder;
+
+      &:disabled {
+        color: #dfdfdf;
+      }
+    }
+  }
+
+  table tbody {
+    text-align: center;
+  }
+}
