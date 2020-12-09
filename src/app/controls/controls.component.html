@@ -1,5 +1,5 @@
-<button class="material-icons"
-        [disabled]="status !== 2"
+<button class="material-icons small"
+        *ngIf="status !== 0"
         (click)="prev()">skip_previous</button>
 <button class="material-icons"
         *ngIf="status < 2"
@@ -8,12 +8,14 @@
         *ngIf="status === 2"
         (click)="pause()">pause</button>
 <button class="material-icons"
-        [disabled]="status === 0"
+        [disabled]="status == 0"
+        *ngIf="status !== 0"
         (click)="stop()">stop</button>
-<button class="material-icons"
-        [disabled]="status !== 2"
+<button class="material-icons small"
+        *ngIf="status !== 0"
         (click)="next()">skip_next</button>
-<button (click)="toggleVolume()">
+<button (click)="toggleVolume()"
+        class="volume small">
   <div class="material-icons">volume_up</div>
   <div class="controls-volume"
        *ngIf="isVisibleVolume">

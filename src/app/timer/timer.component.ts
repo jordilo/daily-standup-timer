@@ -31,7 +31,7 @@ export class TimerComponent implements OnInit, OnChanges {
   @Input() public block: Block;
   @Input() public volume: number;
 
-  @ViewChild('audio', { static: false }) public audio: ElementRef<HTMLAudioElement>;
+  @ViewChild('audio', { static: true }) public audio: ElementRef<HTMLAudioElement>;
 
   private play$ = new Subject();
 

@@ -1,12 +1,33 @@
 @import "../../variables.scss";
+
 :host {
   display: flex;
+  align-items: center;
   flex: 0;
+  position: absolute;
+  bottom: 60px;
+  right: 20px;
+
   button {
-    flex: 1;
-    padding: $padding;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    margin: 0 5px;
+    border: 1px solid grey;
+    box-shadow: 2px 1px 8px -2px black;
+
+    &.small {
+      width: 35px;
+      height: 35px;
+      padding: 0;
+    }
   }
+
   .controls-volume {
     position: absolute;
     width: 100%;
@@ -16,6 +37,7 @@
     height: 50px;
     display: flex;
     justify-content: center;
+
     input {
       background: rgba(255, 255, 255, 0.5);
       border-radius: 10px;
