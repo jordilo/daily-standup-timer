@@ -1,7 +1,14 @@
 <div class="header material-icons">
   <a [routerLink]="['']">keyboard_backspace</a>
+  <button><a download="timer-data.csv"
+       [href]="csvUri">Export</a></button>
 </div>
 <div class="body">
+  <h3>Average time: {{averageTime}} in {{total}} dailies</h3>
+  <select [formControl]="resultsControl">
+    <option *ngFor="let op of options"
+            [ngValue]="op.value">{{op.label}}</option>
+  </select>
   <canvas baseChart
           [datasets]="lineChartData"
           [labels]="lineChartLabels"
@@ -10,19 +17,22 @@
 
   <!-- (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" -->
-</div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Duration</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let d of data">
-      <td>{{d.date}}</td>
-      <td>{{d.diffStr }}</td>
-    </tr>
-  </tbody>
-</table>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Duration</th>
+        <th>Participans</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data">
+        <td>{{d.date}}</td>
+        <td>{{d.diffStr }}</td>
+        <td>{{d.lastPeopleIndex }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
