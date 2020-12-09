@@ -4,10 +4,10 @@
 <button class="material-icons"
         *ngIf="status < 2"
         (click)="play()">play_arrow</button>
-<button class="material-icons"
+<button class="material-icons small"
         *ngIf="status === 2"
         (click)="pause()">pause</button>
-<button class="material-icons"
+<button class="material-icons small"
         [disabled]="status == 0"
         *ngIf="status !== 0"
         (click)="stop()">stop</button>
