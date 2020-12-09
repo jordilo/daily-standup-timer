@@ -15,9 +15,9 @@ export class StatisticsComponent implements OnInit {
   public resultsControl: FormControl;
 
   public options = [
-    { label: 'last week', value: 5 },
-    { label: 'last month', value: 25 },
-    { label: 'all', value: -1 },
+    { label: 'last week', value: 'week' },
+    { label: 'last month', value: 'month' },
+    { label: 'all', value: 'all' },
   ]
   public lineChartData: ChartDataSets[];
 
@@ -66,27 +66,34 @@ export class StatisticsComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.resultsControl = this.fb.control(25);
+    this.resultsControl = this.fb.control('month');
 
     this.resultsControl.valueChanges.subscribe((value) => {
-      if (value !== -1) {
-        const initialPosition = Math.max(this.rawdata.length - value, 0)
-        this.generateData(this.rawdata.slice(this.rawdata.length - value, this.rawdata.length))
-      } else {
-        this.generateData(this.rawdata);
-      }
+      this.generateData(value);
     })
-    this.rawdata = (JSON.parse(localStorage.getItem('saved-executions')) as any[])
-      .filter(({ currentIndex }) => currentIndex !== 0);
-    this.generateData(this.rawdata);
+    this.rawdata = (JSON.parse(localStorage.getItem('saved-executions')) as any[]);
+    this.generateData('month');
   }
 
-  private generateData(dataset: any[]) {
+  private generateData(filter: string) {
+    let dataset;
+    switch (filter) {
+      case 'week':
+      case 'month':
+        const endDate = moment().add(-1, this.resultsControl.value);
+        dataset = this.rawdata.filter((d) => moment(d.startTime) > endDate);
+        break;
+      case 'all':
+      default:
+        dataset = this.rawdata;
+        break;
+    }
+
     this.total = dataset.length;
-    this.data = dataset.map((date) => {
+    const data = dataset.map((date) => {
       const diff = moment(date.finishTime).diff(date.startTime);
       let lastPeopleIndex = date.currentIndex;
-      if (lastPeopleIndex == -1) {
+      if (lastPeopleIndex < 1) {
         lastPeopleIndex = date.configuration.totalIterations;
       }
       return {
@@ -98,24 +105,25 @@ export class StatisticsComponent implements OnInit {
     });
     this.lineChartData = [
       {
-        data: this.data.map(d => d.diff),
+        data: data.map(d => d.diff),
         label: 'Daily time'
       },
       {
-        data: this.data.map(d => d.lastPeopleIndex),
+        data: data.map(d => d.lastPeopleIndex),
         label: 'People',
         yAxisID: 'y-axis-1'
       }
     ];
     this.lineChartLabels = dataset.map((date) => moment(date.startTime).format("MM-DD"));
-    const averageTime = this.data.reduce((acc, current) => acc += current.diff, 0) / dataset.length;
+    const averageTime = data.reduce((acc, current) => acc += current.diff, 0) / dataset.length;
     this.averageTime = moment(averageTime * 1000).format('mm:ss');
-    this.export();
+    this.csvUri = this.export(data);
+    this.data = data;
   }
 
-  public export() {
+  private export(data: any[]) {
     const csv = [['Date', 'Duration', 'Participans']];
-    this.data.forEach((d) => {
+    data.forEach((d) => {
       csv.push([d.date, d.diffStr, d.lastPeopleIndex]);
     });
     let final = ``
@@ -123,7 +131,7 @@ export class StatisticsComponent implements OnInit {
       final += `${d.join(',')}
 `
     })
-    this.csvUri = this.sanitizer.bypassSecurityTrustUrl("data:text/plain;charset=UTF-8," + encodeURIComponent(final));
+    return this.sanitizer.bypassSecurityTrustUrl("data:text/plain;charset=UTF-8," + encodeURIComponent(final));
   }
 
 }
