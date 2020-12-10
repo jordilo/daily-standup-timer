@@ -5,7 +5,7 @@
         *ngIf="status < 2"
         (click)="play()">play_arrow</button>
 <button class="material-icons small"
-        *ngIf="status === 2"
+        *ngIf="status === 2 && allowPause"
         (click)="pause()">pause</button>
 <button class="material-icons small"
         [disabled]="status == 0"

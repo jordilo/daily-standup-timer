@@ -9,18 +9,24 @@
   flex: 1;
   align-items: flex-start;
   justify-content: center;
+  padding-left: 25px;
+
   &.duration {
     background-color: $green;
   }
+
   &.rest {
     background-color: $rest;
   }
+
   &.warning {
     background-color: $warning;
+
     @-webkit-keyframes change-color {
       0% {
         background-color: $warning;
       }
+
       100% {
         background-color: saturate($warning, 0);
       }
@@ -30,18 +36,22 @@
       0% {
         background-color: $warning;
       }
+
       50% {
         background-color: #ec5729;
       }
+
       100% {
         background-color: $warning;
       }
     }
+
     -webkit-animation: change-color 4s ease 0s infinite normal;
     -moz-animation: change-color 4s ease 0s infinite normal;
     -ms-animation: change-color 4s ease 0s infinite normal;
     animation: change-color 4s ease 0s infinite normal;
   }
+
   .remaining-timer {
     font-size: 15vw;
   }

@@ -20,6 +20,7 @@ export class ControlsComponent implements OnInit, OnDestroy {
   @Output() public doPrev = new EventEmitter<any>();
   @Output() public doNext = new EventEmitter<any>();
   @Output() public changeVolume = new EventEmitter<number>();
+  @Input() public allowPause: boolean;
   public volumentControl: FormControl;
   public isVisibleVolume = false;
   private volumentSubscription: Subscription;

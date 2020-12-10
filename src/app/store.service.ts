@@ -29,7 +29,8 @@ export class StoreService {
     stepDuration: 60,
     totalIterations: 5,
     warningTimer: 10,
-    volume: 1
+    volume: 1,
+    allowPause: false
   };
   constructor() {
     const savedDataStr = localStorage.getItem(this.SAVED_DATA_KEY);

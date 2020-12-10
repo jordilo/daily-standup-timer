@@ -25,6 +25,7 @@
                       (configurationChange)="saveConfiguration($event ,data.config )"></app-quick-settings>
   <app-controls [status]="data.status"
                 [volume]="data.config.volume"
+                [allowPause]="data.config.allowPause"
                 (doPrev)="selectGraph(data.runningSettings.blocks[data.execution.currentIndex-1])"
                 (doNext)="selectGraph(data.runningSettings.blocks[data.execution.currentIndex+1])"
                 (doPause)="pause()"

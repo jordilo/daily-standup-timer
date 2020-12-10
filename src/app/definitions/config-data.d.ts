@@ -4,6 +4,7 @@ export interface Configuration {
   restDuration: number;
   warningTimer: number;
   volume: number;
+  allowPause: boolean;
 }
 
 export const enum TimerStatus {

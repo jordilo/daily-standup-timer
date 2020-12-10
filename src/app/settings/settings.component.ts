@@ -22,7 +22,8 @@ export class SettingsComponent implements OnInit {
       stepDuration: [1, Validators.min(1)],
       volume: [1, [Validators.min(0), Validators.max(1)]],
       totalIterations: [1, [Validators.min(1), Validators.max(18)]],
-      warningTimer: [1, [Validators.min(5)]]
+      warningTimer: [1, [Validators.min(5)]],
+      allowPause: [true, [Validators.required]]
     });
     this.store.configuration$
       .subscribe((configuration) => this.form.setValue(configuration));
