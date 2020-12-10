@@ -92,9 +92,13 @@ export class StatisticsComponent implements OnInit {
     this.total = dataset.length;
     const data = dataset.map((date) => {
       const diff = moment(date.finishTime).diff(date.startTime);
-      let lastPeopleIndex = date.currentIndex;
-      if (lastPeopleIndex < 1) {
+      let lastPeopleIndex;
+      // If timer has finished without click stop button, current index is -1
+      if (date.currentIndex < 1) {
         lastPeopleIndex = date.configuration.totalIterations;
+      } else {
+        // Divided by 2 due to index has take care of time between participants
+        lastPeopleIndex = Math.trunc(date.currentIndex / 2) + 1;
       }
       return {
         diff: diff / 1000,
@@ -106,7 +110,7 @@ export class StatisticsComponent implements OnInit {
     this.lineChartData = [
       {
         data: data.map(d => d.diff),
-        label: 'Daily time'
+        label: 'Daily time (in seconds)'
       },
       {
         data: data.map(d => d.lastPeopleIndex),
